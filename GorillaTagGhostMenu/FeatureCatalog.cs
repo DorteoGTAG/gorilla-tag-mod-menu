@@ -1,0 +1,267 @@
+using System.Collections.Generic;
+using System.Linq;
+
+namespace GorillaTagGhostMenu;
+
+public sealed class FeatureDefinition
+{
+    public string Name { get; set; } = string.Empty;
+    public string Category { get; set; } = "General";
+    public string Description { get; set; } = string.Empty;
+    public string Hotkey { get; set; } = string.Empty;
+    public bool Enabled { get; set; }
+
+    public FeatureDefinition(string name, string category, string description, string hotkey = "", bool enabled = false)
+    {
+        Name = name;
+        Category = category;
+        Description = description;
+        Hotkey = hotkey;
+        Enabled = enabled;
+    }
+}
+
+public static class FeatureCatalog
+{
+    public static IReadOnlyList<FeatureDefinition> All => _features;
+
+    private static readonly List<FeatureDefinition> _features = new()
+    {
+        new("Ghost Trail", "Visuals", "Adds a soft ghost-like trail behind the player model.", "F1"),
+        new("Floating Aura", "Visuals", "Creates a floating glow around the avatar.", "F2"),
+        new("Phantom Outline", "Visuals", "Adds a subtle phantom outline to the body.", "F3"),
+        new("Pulse Glow", "Visuals", "Minor pulsing aura expansion.", "F4"),
+        new("Spectral Fog", "Visuals", "Adds creeping fog around the area.", "F5"),
+        new("Moonlit Shader", "Visuals", "Faux moonlit color grading for a ghostly presentation.", "F6"),
+        new("Ethereal Bloom", "Visuals", "Adds an energy bloom effect to the avatar.", "F7"),
+        new("Ghost Form", "Visuals", "Local-only transparent ghostification style.", "F8"),
+        new("Soft Shadow", "Visuals", "Provides a low-contrast silhouette shadow.", "F9"),
+        new("Noir Fade", "Visuals", "Darkens the environment for a moonlit presentation.", "F10"),
+        new("Nebula Rings", "Visuals", "Adds subtle orbiting rings around the player.", "F11"),
+        new("Afterimage", "Visuals", "Adds brief ghostly images on movement.", "F12"),
+        new("Spectral Dust", "Visuals", "Particles swirl around the player.", "F13"),
+        new("Light Burst", "Visuals", "Adds a small burst when moving.", "F14"),
+        new("Crystal Glow", "Visuals", "Adds a crystalline edge highlight.", "F15"),
+        new("Wisp Tracker", "Visuals", "Small glowing wisps orbit the player.", "F16"),
+        new("Mist Veil", "Visuals", "Soft fog veil at the edges of the view.", "F17"),
+        new("Hollow Body", "Visuals", "Low-opacity avatar effect.", "F18"),
+        new("Sway Trails", "Visuals", "Creates motion trails from small body sways.", "F19"),
+        new("Prism Luster", "Visuals", "Adds a prism-like highlight layer.", "F20"),
+        new("Haunted Sky", "Environment", "Sets the sky to a haunted color palette.", "G1"),
+        new("Fog Density +", "Environment", "Increases volumetric fog density.", "G2"),
+        new("Cloud Drift", "Environment", "Adds slow drifting cloud motion.", "G3"),
+        new("Night Bloom", "Environment", "Warmer and cooler night tones in the arena.", "G4"),
+        new("Moon Glow", "Environment", "Enhances moon-like emissive lighting.", "G5"),
+        new("Misty Ambience", "Environment", "Adds a denser ambient mist.", "G6"),
+        new("Color Wash", "Environment", "Mood color grading across the map.", "G7"),
+        new("Cinematic Contrast", "Environment", "Enhances lighting contrast.", "G8"),
+        new("Soft Rain", "Environment", "Adds a gentle rain texture overlay.", "G9"),
+        new("Shadow Bloom", "Environment", "Adds a softer shadow gradient.", "G10"),
+        new("Haze Filter", "Environment", "Adds mid-distance atmospheric haze.", "G11"),
+        new("Starfall Dust", "Environment", "Adds occasional floating particles.", "G12"),
+        new("Lantern Glow", "Environment", "Adds warm glow to local props.", "G13"),
+        new("Static Mist", "Environment", "Adds floating atmospheric static noise.", "G14"),
+        new("Dusk Tint", "Environment", "Adds a dusk palette override.", "G15"),
+        new("Echo Lights", "Environment", "Adds distant glowing lights in the arena.", "G16"),
+        new("Ghost Cloud", "Environment", "Adds a cloud-like ghost moving behind the player.", "G17"),
+        new("Depth Fog", "Environment", "Adds more atmospheric depth.", "G18"),
+        new("Lunar Haze", "Environment", "A dim moonlit haze layer.", "G19"),
+        new("Moth Particles", "Environment", "Floating moth-like particles in the scene.", "G20"),
+        new("Smooth Step", "Movement", "Increases movement smoothness locally.", "M1"),
+        new("Air Drift", "Movement", "Adds gentle mid-air drift smoothing.", "M2"),
+        new("Gravity Softener", "Movement", "Softens landing transitions.", "M3"),
+        new("Turn Snap", "Movement", "Improves turn responsiveness.", "M4"),
+        new("Momentum Curve", "Movement", "Makes motion feel more fluid.", "M5"),
+        new("Wall Glide", "Movement", "Adds a subtle glide feel near surfaces.", "M6"),
+        new("Landing Feather", "Movement", "Softens landings visually.", "M7"),
+        new("Hop Sway", "Movement", "Adds subtle body sway when hopping.", "M8"),
+        new("Quick Turn", "Movement", "Enhances fast rotate feel.", "M9"),
+        new("Hover Assist", "Movement", "Local visual hover assist for smoother motion.", "M10"),
+        new("Footstep Echo", "Audio", "Adds echo to nearby footsteps.", "A1"),
+        new("Lunar Whoosh", "Audio", "Adds soft wind-like whooshes.", "A2"),
+        new("Ghost Chime", "Audio", "Small whisper-like chime effect.", "A3"),
+        new("Bass Fade", "Audio", "Adds subtle low-end presence.", "A4"),
+        new("Spatial Drift", "Audio", "Gives audio more depth and spread.", "A5"),
+        new("Soft Reverb", "Audio", "Adds a gentle reverb to local sound.", "A6"),
+        new("Whisper Layer", "Audio", "Adds faint ambience to movement.", "A7"),
+        new("Echo Burst", "Audio", "Adds a subtle burst on jumps.", "A8"),
+        new("Distant Choir", "Audio", "Adds a soft ambient choir layer.", "A9"),
+        new("Night Wind", "Audio", "Adds wind ambience around the player.", "A10"),
+        new("Crescent Tone", "Audio", "Adds a soft tonal pad to the soundscape.", "A11"),
+        new("Aether Reverb", "Audio", "Enhances room echo subtly.", "A12"),
+        new("HUD Toggle", "UI", "Shows or hides the in-game HUD.", "U1"),
+        new("Minimal HUD", "UI", "Reduces HUD clutter.", "U2"),
+        new("Crosshair Ghost", "UI", "A faint ghostly crosshair overlay.", "U3"),
+        new("Player Tag", "UI", "Custom tag overlay style.", "U4"),
+        new("Status Ring", "UI", "Adds a circular status indicator.", "U5"),
+        new("Center Dot", "UI", "Minimal center reticle.", "U6"),
+        new("Ping Glyphs", "UI", "Adds small ping-like glyphs.", "U7"),
+        new("Round Timer", "UI", "An alternate timer presentation.", "U8"),
+        new("Minimal Killscreen", "UI", "Simplifies kill overlay.", "U9"),
+        new("Ghost Compass", "UI", "Adds a subtle directional overlay.", "U10"),
+        new("Quick Access Bar", "UI", "A custom menu bar for shortcuts.", "U11"),
+        new("Leader Glyphs", "UI", "Displays a more stylized player marker.", "U12"),
+        new("Safe Mode Overlay", "UI", "Adds a local safety status overlay.", "U13"),
+        new("Latency Meter", "UI", "Local latency display visualization.", "U14"),
+        new("Status Panel", "UI", "Displays local status information.", "U15"),
+        new("Vanity Meter", "UI", "Optional custom cosmetic meter.", "U16"),
+        new("Ghost Minder", "UI", "Small ghost-themed status indicator.", "U17"),
+        new("HUD Fade", "UI", "Fades HUD on idle.", "U18"),
+        new("Center Marker", "UI", "A centered ghost accent marker.", "U19"),
+        new("Info Pulse", "UI", "Adds subtle animation to HUD info.", "U20"),
+        new("Quick Toggle 1", "Utility", "Shortcut slot for feature one.", "Q1"),
+        new("Quick Toggle 2", "Utility", "Shortcut slot for feature two.", "Q2"),
+        new("Quick Toggle 3", "Utility", "Shortcut slot for feature three.", "Q3"),
+        new("Quick Toggle 4", "Utility", "Shortcut slot for feature four.", "Q4"),
+        new("Quick Toggle 5", "Utility", "Shortcut slot for feature five.", "Q5"),
+        new("Quick Toggle 6", "Utility", "Shortcut slot for feature six.", "Q6"),
+        new("Quick Toggle 7", "Utility", "Shortcut slot for feature seven.", "Q7"),
+        new("Quick Toggle 8", "Utility", "Shortcut slot for feature eight.", "Q8"),
+        new("Quick Toggle 9", "Utility", "Shortcut slot for feature nine.", "Q9"),
+        new("Quick Toggle 10", "Utility", "Shortcut slot for feature ten.", "Q10"),
+        new("Menu Opacity +", "Utility", "Increases menu transparency.", "Q11"),
+        new("Menu Scale +", "Utility", "Increases menu scaling.", "Q12"),
+        new("Menu Snap", "Utility", "Grid snaps menu controls.", "Q13"),
+        new("Auto Save", "Utility", "Automatically stores settings.", "Q14"),
+        new("Save Profile", "Utility", "Stores current menu preset.", "Q15"),
+        new("Load Profile", "Utility", "Loads a previously saved preset.", "Q16"),
+        new("Reset Menu", "Utility", "Resets all active toggles.", "Q17"),
+        new("Select All", "Utility", "Turns on all non-destructive toggles.", "Q18"),
+        new("Clear All", "Utility", "Disables all toggles.", "Q19"),
+        new("Export Profile", "Utility", "Exports the current config to JSON.", "Q20"),
+        new("Import Profile", "Utility", "Imports a previously saved JSON config.", "Q21"),
+        new("Alarm Toggle", "Utility", "Adds a custom local alarm sound.", "Q22"),
+        new("Config Lock", "Utility", "Locks configuration editing.", "Q23"),
+        new("Focus Lock", "Utility", "Keeps current menu category open.", "Q24"),
+        new("Theme Shift", "Utility", "Quick switch to alternate menu styling.", "Q25"),
+        new("Ghost Browser", "Utility", "Browse available visual presets.", "Q26"),
+        new("Preset Save 1", "Utility", "Slot for preset save.", "Q27"),
+        new("Preset Save 2", "Utility", "Slot for preset save.", "Q28"),
+        new("Preset Save 3", "Utility", "Slot for preset save.", "Q29"),
+        new("Preset Save 4", "Utility", "Slot for preset save.", "Q30"),
+        new("Preset Save 5", "Utility", "Slot for preset save.", "Q31"),
+        new("Preset Save 6", "Utility", "Slot for preset save.", "Q32"),
+        new("Preset Save 7", "Utility", "Slot for preset save.", "Q33"),
+        new("Preset Save 8", "Utility", "Slot for preset save.", "Q34"),
+        new("Ghost Stance 1", "Appearance", "Variant one of ghost posture display.", "P1"),
+        new("Ghost Stance 2", "Appearance", "Variant two of ghost posture display.", "P2"),
+        new("Ghost Stance 3", "Appearance", "Variant three of ghost posture display.", "P3"),
+        new("Ghost Stance 4", "Appearance", "Variant four of ghost posture display.", "P4"),
+        new("Ghost Stance 5", "Appearance", "Variant five of ghost posture display.", "P5"),
+        new("Ghost Stance 6", "Appearance", "Variant six of ghost posture display.", "P6"),
+        new("Ghost Stance 7", "Appearance", "Variant seven of ghost posture display.", "P7"),
+        new("Ghost Stance 8", "Appearance", "Variant eight of ghost posture display.", "P8"),
+        new("Ghost Stance 9", "Appearance", "Variant nine of ghost posture display.", "P9"),
+        new("Ghost Stance 10", "Appearance", "Variant ten of ghost posture display.", "P10"),
+        new("Aurora Ring", "Appearance", "Circular aurora ring around the player.", "P11"),
+        new("Halo Ring", "Appearance", "Thin halo ring.", "P12"),
+        new("Tidal Glow", "Appearance", "Subtle wave glow moving around the body.", "P13"),
+        new("Soul Lens", "Appearance", "Adds a soul-like lens overlay.", "P14"),
+        new("Vapor Outline", "Appearance", "Thin vapor outline around the body.", "P15"),
+        new("Moon Halo", "Appearance", "Moon halo effect around the head.", "P16"),
+        new("Spectral Crown", "Appearance", "Ghost crown-like trim.", "P17"),
+        new("Lunar Mirror", "Appearance", "Mirror-like surface reflection.", "P18"),
+        new("Prism Veil", "Appearance", "Prism layers across the body.", "P19"),
+        new("Ghost Ribbon", "Appearance", "Ribbon-like streamers trailing the player.", "P20"),
+        new("Ripple Field", "Effects", "Adds soft ripples around the player.", "E1"),
+        new("Shockwave", "Effects", "A soft shockwave effect when moving.", "E2"),
+        new("Arc Burst", "Effects", "Adds short arc-like bursts.", "E3"),
+        new("Spark Trails", "Effects", "Short sparks generated during movement.", "E4"),
+        new("Pulse Burst", "Effects", "Repeated pulse radiating from the player.", "E5"),
+        new("Orbit Sparks", "Effects", "Mini sparks orbiting the body.", "E6"),
+        new("Echo Pulse", "Effects", "Repeated echo pulses behind the character.", "E7"),
+        new("Mote Ring", "Effects", "A ring of motes around the player.", "E8"),
+        new("Star Mist", "Effects", "Star-like motes floating around the player.", "E9"),
+        new("Spirit Burst", "Effects", "Short spiritual burst effect.", "E10"),
+        new("Signal Glow", "Effects", "Adds a signal-like glow.", "E11"),
+        new("Wave Rings", "Effects", "Generates rings that expand outward.", "E12"),
+        new("Luma Trails", "Effects", "Adds a luminous trail behind movement.", "E13"),
+        new("Static Bloom", "Effects", "Adds a subtle static bloom.", "E14"),
+        new("Warp Glow", "Effects", "Adds a warp-like sheen in motion.", "E15"),
+        new("Sunset Mist", "Effects", "Warm atmospheric haze for a sunset mood.", "E16"),
+        new("Bloom Ring", "Effects", "Circular glow ring.", "E17"),
+        new("Shimmer Flux", "Effects", "Soft shimmering overlay.", "E18"),
+        new("Eclipse Dust", "Effects", "Adds dark tendrils of dust.", "E19"),
+        new("Luminous Wake", "Effects", "Adds trailing luminous wake.", "E20"),
+        new("Ghost Energy 1", "Power", "Power slot 1 for custom energy display.", "R1"),
+        new("Ghost Energy 2", "Power", "Power slot 2 for custom energy display.", "R2"),
+        new("Ghost Energy 3", "Power", "Power slot 3 for custom energy display.", "R3"),
+        new("Ghost Energy 4", "Power", "Power slot 4 for custom energy display.", "R4"),
+        new("Ghost Energy 5", "Power", "Power slot 5 for custom energy display.", "R5"),
+        new("Ghost Energy 6", "Power", "Power slot 6 for custom energy display.", "R6"),
+        new("Ghost Energy 7", "Power", "Power slot 7 for custom energy display.", "R7"),
+        new("Ghost Energy 8", "Power", "Power slot 8 for custom energy display.", "R8"),
+        new("Ghost Energy 9", "Power", "Power slot 9 for custom energy display.", "R9"),
+        new("Ghost Energy 10", "Power", "Power slot 10 for custom energy display.", "R10"),
+        new("Ethereal Filter", "Power", "A filter-like spectral overlay.", "R11"),
+        new("Phantom Power", "Power", "Custom phantom power meter.", "R12"),
+        new("Glow Core", "Power", "Creates a glow core around the player.", "R13"),
+        new("Arcade Pulse", "Power", "Adds a neon arcade pulse.", "R14"),
+        new("Aether Bar", "Power", "Displays a stylized energy bar.", "R15"),
+        new("Ghost Charge", "Power", "A charging spirit effect.", "R16"),
+        new("Vapor Core", "Power", "Core-like vapor particle system.", "R17"),
+        new("Quartz Pulse", "Power", "Crystal pulse around the character.", "R18"),
+        new("Signal Arc", "Power", "Adds arcing signal lines.", "R19"),
+        new("Spectral X", "Power", "Adds a spectral X-shaped overlay.", "R20"),
+        new("Ghost Echo 1", "Extras", "Extra echo layer 1.", "X1"),
+        new("Ghost Echo 2", "Extras", "Extra echo layer 2.", "X2"),
+        new("Ghost Echo 3", "Extras", "Extra echo layer 3.", "X3"),
+        new("Ghost Echo 4", "Extras", "Extra echo layer 4.", "X4"),
+        new("Ghost Echo 5", "Extras", "Extra echo layer 5.", "X5"),
+        new("Ghost Echo 6", "Extras", "Extra echo layer 6.", "X6"),
+        new("Ghost Echo 7", "Extras", "Extra echo layer 7.", "X7"),
+        new("Ghost Echo 8", "Extras", "Extra echo layer 8.", "X8"),
+        new("Ghost Echo 9", "Extras", "Extra echo layer 9.", "X9"),
+        new("Ghost Echo 10", "Extras", "Extra echo layer 10.", "X10"),
+        new("Mood Snap", "Extras", "Quick color mood switch.", "X11"),
+        new("Skyline Fade", "Extras", "Adds distant skyline fade.", "X12"),
+        new("Night Drift", "Extras", "A soft drift effect for the scene.", "X13"),
+        new("Vapor Bloom", "Extras", "Adds a vapor-like bloom to background elements.", "X14"),
+        new("Candle Glow", "Extras", "Adds warm candle-like ambient glow.", "X15"),
+        new("Reflective Mist", "Extras", "Adds a reflective mist layer.", "X16"),
+        new("Blur Halo", "Extras", "Adds a subtle blur halo.", "X17"),
+        new("Sheet Glow", "Extras", "Adds a glowing sheet overlay.", "X18"),
+        new("Ghost Bloom", "Extras", "Adds bright spectral bloom.", "X19"),
+        new("Abyss Fade", "Extras", "Adds dark abyss fade in corners.", "X20"),
+        new("Phantom Step", "Animation", "Adds a phantom-like step animation.", "N1"),
+        new("Float Idle", "Animation", "Adds idle float to the character.", "N2"),
+        new("Teleport Glow", "Animation", "Adds a small effect when appearing/disappearing.", "N3"),
+        new("Hover Wave", "Animation", "Adds wave-like idle movement.", "N4"),
+        new("Slow Bob", "Animation", "Adds gentle floating bobbing.", "N5"),
+        new("Trail Sway", "Animation", "Adds cross-body trail sway.", "N6"),
+        new("Phase Idle", "Animation", "Faint phase-like idle motion.", "N7"),
+        new("Silhouette Drift", "Animation", "Adds slight silhouette moving in place.", "N8"),
+        new("Astral Lean", "Animation", "Lean effect for custom avatar posture.", "N9"),
+        new("Ghost Roll", "Animation", "Adds soft rolling motion.", "N10"),
+        new("Light Arc", "Animation", "Adds arc lighting across the model.", "N11"),
+        new("Vapor Twist", "Animation", "Twisting vapor-like effect.", "N12"),
+        new("Soft Orbit", "Animation", "Small orbital motion on the avatar.", "N13"),
+        new("Moon Drift", "Animation", "Slow drift like lunar motion.", "N14"),
+        new("Echo Lean", "Animation", "Adds echo-based lean on movement.", "N15"),
+        new("Wisp Hover", "Animation", "Hovering wisp effect around the character.", "N16"),
+        new("Split Glow", "Animation", "Adds fractional glowing split effect.", "N17"),
+        new("Cloud Fade", "Animation", "Adds fading clouds around the body.", "N18"),
+        new("Mist Orbit", "Animation", "A circular mist motion around the player.", "N19"),
+        new("Drift Pulse", "Animation", "Pulse-like drift animation.", "N20")
+    };
+
+    public static IReadOnlyList<FeatureDefinition> GetByCategory(string category)
+    {
+        return _features.Where(f => string.Equals(f.Category, category, System.StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    public static FeatureDefinition? FindByName(string name)
+    {
+        return _features.FirstOrDefault(f => string.Equals(f.Name, name, System.StringComparison.OrdinalIgnoreCase));
+    }
+
+    public static IEnumerable<string> GetCategories()
+    {
+        return _features.Select(f => f.Category).Distinct();
+    }
+
+    public static string[] GetNames()
+    {
+        return _features.Select(f => f.Name).ToArray();
+    }
+}
